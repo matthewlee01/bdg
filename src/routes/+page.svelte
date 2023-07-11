@@ -1,2 +1,16 @@
+
+
 <h1>the Birthday Game</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="name-form">
+	<form method="POST">
+		<label>
+			please enter your name:
+			<input name="name" type="text"/>
+		</label>
+		
+		<button>submit</button>
+	</form>
+</div>
+
+<script>
+</script>
