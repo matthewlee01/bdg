@@ -2,7 +2,7 @@ import prisma from '$lib/prisma';
 import { redirect } from '@sveltejs/kit';
 
 export const actions = {
-	default: async ({ request, url }) => {
+	default: async ({ request }) => {
 		const data = await request.formData();
 		const id = String(data.get('name'));
 
@@ -16,9 +16,9 @@ export const actions = {
 					id: id
 				}
 			})
-			console.log('created player: ', id);
+			console.log('[ login ] created player: ', id);
 		}
-		console.log('serving player: ', id);
+		console.log('[ login ] serving player: ', id);
 		throw redirect(303, `/players/${id}`);
 	}
 };
