@@ -89,13 +89,15 @@
           <option>{group.id}</option>
         {/each}
       </select>
+      <br />
       <label>
         quest start time <span>(optional)</span>
-        <input type="time" name="assignmentStart" />
+        <input type="time" name="startTime" />
       </label>
+      <br />
       <label>
-        quest duration (minutes) <span>(optional)</span>
-        <input type="number" name="assignmentDuration" />
+        quest end time <span>(optional)</span>
+        <input type="time" name="endTime" />
       </label>
       <button formaction="?/questAssign">assign selected quests to group</button
       >

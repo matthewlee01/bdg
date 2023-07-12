@@ -146,17 +146,26 @@ export const actions = {
     const questIds = data.getAll("quest");
     const groupId = data.get("groupId");
     const today = new Date();
-    const assignmentStart = data.get("assignmentStart") || null;
-    const assignmentDuration = data.get("assignmentDuration") || null;
+    const startTimeString = data.get("startTime") || null;
+    let startTime;
+    if (startTimeString) {
+      startTime = new Date(
+        today.toDateString() + " " + String(startTimeString)
+      );
+    }
+    const endTimeString = data.get("endTime") || null;
+    let endTime;
+    if (endTimeString) {
+      endTime = new Date(today.toDateString() + " " + String(endTimeString));
+    }
 
     for (const questId of questIds) {
       const fields = {
         questId: questId,
         groupId: groupId,
-        startTime: new Date(
-          today.toDateString() + " " + String(assignmentStart)
-        ),
-        duration: parseInt(assignmentDuration),
+        startTime: startTime,
+        endTime: endTime,
+        status: false,
       };
       await prisma.questAssignment.upsert({
         where: {
@@ -167,6 +176,49 @@ export const actions = {
         },
         create: fields,
         update: fields,
+      });
+
+      new Promise((resolve) => {
+        setTimeout(() => resolve(), endTime.getTime() - new Date().getTime());
+      }).then(async () => {
+        await prisma.questAssignment.update({
+          where: {
+            questId_groupId: {
+              questId: questId,
+              groupId: groupId,
+            },
+          },
+          data: {
+            status: true,
+            proofLink: null,
+          },
+        });
+
+        const { demerits } = await prisma.quest.findUnique({
+          where: {
+            id: questId,
+          },
+          select: {
+            demerits: true,
+          },
+        });
+
+        await prisma.group.update({
+          where: {
+            id: groupId,
+          },
+          data: {
+            demerits: {
+              increment: demerits,
+            },
+          },
+        });
+        console.log(
+          "[ admin ] quest: ",
+          questId,
+          "has expired for group:",
+          groupId
+        );
       });
     }
 

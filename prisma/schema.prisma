@@ -39,8 +39,8 @@ model QuestAssignment {
   questId       String
   group         Group       @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId       String 
-  duration      Int?
   startTime     DateTime?
+  endTime       DateTime?
   status        Boolean     @default(false)
   proofLink     String?  
   @@id([questId, groupId])
