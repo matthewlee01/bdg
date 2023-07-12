@@ -219,7 +219,8 @@ export const actions = {
           "has expired for group:",
           groupId
         );
-      });
+      })
+      .catch((error) => {console.log(error)});
     }
 
     console.log("[ admin ] assigned quests:", questIds, "to group:", groupId);

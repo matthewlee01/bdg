@@ -16,6 +16,11 @@ export const load = async ({ params: { id } }) => {
       },
     },
   });
+	const assignments = player.group.assignments;
+	player.group.assignments = assignments.filter((assignment) => {
+		let now = new Date();
+		return (assignment.startTime.getTime() < now.getTime());
+	})
   return { player };
 };
 
