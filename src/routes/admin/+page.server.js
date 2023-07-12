@@ -151,21 +151,17 @@ export const actions = {
     let startTime;
     if (startTimeString) {
       startTime = new Date(localDateString + " " + String(startTimeString));
-      startTime = new Date(
-        startTime.toLocaleString("en-US", {
-          timeZone: "America/Vancouver",
-        })
-      );
+      if (!process.env.LOCAL_DEV) {
+        startTime = new Date(startTime.getTime() + 50400000)
+      }
     }
     const endTimeString = data.get("endTime") || null;
     let endTime;
     if (endTimeString) {
       endTime = new Date(localDateString + " " + String(endTimeString));
-      endTime = new Date(
-        endTime.toLocaleString("en-US", {
-          timeZone: "America/Vancouver",
-        })
-      );
+      if (!process.env.LOCAL_DEV) {
+        endTime = new Date(endTime.getTime() + 50400000)
+      }
     }
 
     for (const questId of questIds) {
