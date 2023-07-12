@@ -2,9 +2,12 @@
   export let data;
   const player = data.player;
   const group = player.group;
-  const assignments = group.assignments;
-
-  console.log(player);
+  const assignments = group.assignments.filter(
+    (assignment) => !assignment.status
+  );
+  const completedAssignments = group.assignments.filter(
+    (assignment) => assignment.status
+  );
 </script>
 
 <div>
@@ -29,7 +32,7 @@
         <ul>
           {#each assignments as assignment (assignment.questId)}
             <li>
-              <field>
+              <form method="POST">
                 <fieldset>
                   <legend>{assignment.questId}</legend>
                   {assignment.quest.description}
@@ -44,10 +47,28 @@
                     <a href={assignment.quest.location} target="_blank"
                       >link to map location</a
                     >
+                    <br />
                   {/if}
+                  <input name="proofLink" required />
+                  <input name="questId" value={assignment.questId} hidden />
+                  <input name="groupId" value={group.id} hidden />
+                  <input name="playerId" value={player.id} hidden />
+                  <button formaction="?/questComplete">complete quest!</button>
                 </fieldset>
-              </field>
+              </form>
             </li>
+          {/each}
+        </ul>
+      </div>
+      <div>
+        <h5>completed quests</h5>
+        <ul>
+          {#each completedAssignments as assignment (assignment.questId)}
+						{#if assignment.proofLink}
+            	<li>{assignment.questId} - success! points awarded: {assignment.quest.points}</li>
+						{:else}
+            	<li>{assignment.questId} - failed... demerits added: {assignment.quest.demerits}</li>
+						{/if}
           {/each}
         </ul>
       </div>
