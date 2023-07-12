@@ -2,12 +2,16 @@
   export let data;
   const player = data.player;
   const group = player.group;
-  const assignments = group.assignments.filter(
-    (assignment) => !assignment.status
-  );
-  const completedAssignments = group.assignments.filter(
-    (assignment) => assignment.status
-  );
+  let assignments = [];
+  let completedAssignments = [];
+  if (group) {
+    assignments = group.assignments.filter(
+      (assignment) => !assignment.status
+    );
+    completedAssignments = group.assignments.filter(
+      (assignment) => assignment.status
+    );
+  }
 </script>
 
 <div>
@@ -68,11 +72,17 @@
         <h4>completed quests</h4>
         <ul>
           {#each completedAssignments as assignment (assignment.questId)}
-						{#if assignment.proofLink}
-            	<li>{assignment.questId} - success! points awarded: {assignment.quest.points}</li>
-						{:else}
-            	<li>{assignment.questId} - failed... demerits added: {assignment.quest.demerits}</li>
-						{/if}
+            {#if assignment.proofLink}
+              <li>
+                {assignment.questId} - success! points awarded: {assignment
+                  .quest.points}
+              </li>
+            {:else}
+              <li>
+                {assignment.questId} - failed... demerits added: {assignment
+                  .quest.demerits}
+              </li>
+            {/if}
           {/each}
         </ul>
       </div>
