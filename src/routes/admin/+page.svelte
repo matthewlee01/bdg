@@ -1,7 +1,6 @@
 <script>
   export let data;
-  const players = data.players;
-  const groups = data.groups;
+  const { players, groups, quests } = data;
 </script>
 
 <h3>story teller dash board</h3>
@@ -22,14 +21,17 @@
         </li>
       {/each}
     </ul>
-    <select name="groupId">
-      {#each groups as group (group.id)}
-        <option>{group.id}</option>
-      {/each}
-    </select>
-
-    <button formaction="?/groupAdd">add selected to group</button>
     <button formaction="?/playerDelete">delete selected players</button>
+
+    <fieldset>
+      <legend>select group</legend>
+      <select name="groupId">
+        {#each groups as group (group.id)}
+          <option>{group.id}</option>
+        {/each}
+      </select>
+      <button formaction="?/groupAdd">add selected to group</button>
+    </fieldset>
   </fieldset>
 </form>
 
@@ -51,9 +53,88 @@
         </li>
       {/each}
     </ul>
-
-    <input type="text" name="groupId" />
-    <button formaction="?/groupCreate">create group</button>
     <button formaction="?/groupDelete">delete selected groups</button>
+
+    <fieldset>
+      <legend>new group</legend>
+      <input type="text" name="groupId" required />
+      <button formaction="?/groupCreate">create group</button>
+    </fieldset>
+  </fieldset>
+</form>
+
+<form method="POST">
+  <fieldset>
+    <legend>quests</legend>
+    <ul>
+      {#each quests as quest (quest.id)}
+        <li>
+          <input type="checkbox" id={quest.id} name="quest" value={quest.id} />
+          <label for={quest.id}>{quest.id}</label>
+          <div>
+            description: {quest.description} <br />
+            participants: {quest.participants || "n/a"}<br />
+            reward: {quest.points} points<br />
+            demerits: {quest.demerits}<br />
+            location: <a href={quest.location}>link</a><br />
+          </div>
+        </li>
+      {/each}
+    </ul>
+    <button formaction="?/questDelete">delete selected quests</button>
+    <fieldset>
+      <legend>assign quests</legend>
+      <select name="groupId">
+        {#each groups as group (group.id)}
+          <option>{group.id}</option>
+        {/each}
+      </select>
+      <label>
+        quest start time <span>(optional)</span>
+        <input type="time" name="assignmentStart" />
+      </label>
+      <label>
+        quest duration (minutes) <span>(optional)</span>
+        <input type="number" name="assignmentDuration" />
+      </label>
+      <button formaction="?/questAssign">assign selected quests to group</button
+      >
+    </fieldset>
+    <form method="POST">
+      <fieldset>
+        <legend>new quest</legend>
+        <label
+          >title
+          <input type="text" name="questId" required />
+        </label>
+        <br />
+        <label
+          >description
+          <textarea name="questDescription" required />
+        </label>
+        <br />
+        <label>
+          # of participants <span>(optional)</span>
+          <input type="number" name="questParticipants" />
+        </label>
+        <br />
+        <label>
+          # points for success
+          <input type="number" name="questPoints" required />
+        </label>
+        <br />
+        <label>
+          # demerits for failure
+          <input type="number" name="questDemerits" required />
+        </label>
+        <br />
+        <label>
+          map link location <span>(optional)</span>
+          <input type="text" name="questLocation" />
+        </label>
+        <br />
+        <button formaction="?/questCreate">create quest</button>
+      </fieldset>
+    </form>
   </fieldset>
 </form>

@@ -17,8 +17,29 @@ model Player {
 }
 
 model Group {
-  id        String   @id
-  demerits  Int
-  points    Int
-  players   Player[]
+  id            String   @id
+  demerits      Int
+  points        Int
+  players       Player[]
+  assignments   QuestAssignment[]
+}
+
+model Quest {
+  id            String   @id
+  description   String
+  participants  Int?
+  points        Int
+  demerits      Int
+  location      String?
+  assignments   QuestAssignment[]
+}
+
+model QuestAssignment {
+  quest         Quest       @relation(fields: [questId], references: [id])
+  questId       String
+  group         Group       @relation(fields: [groupId], references: [id])
+  groupId       String 
+  duration      Int?
+  startTime     DateTime?
+  @@id([questId, groupId])
 }
