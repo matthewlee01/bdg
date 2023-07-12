@@ -80,8 +80,6 @@ export const actions = {
     const data = await request.formData();
     const groupIds = data.getAll("group");
 
-    // TODO: cascade assignment deletion
-
     await prisma.player.updateMany({
       where: { groupId: { in: groupIds } },
       data: {
@@ -135,8 +133,6 @@ export const actions = {
   questDelete: async ({ request }) => {
     const data = await request.formData();
     const questIds = data.getAll("quest");
-
-    // TODO cascade assignments
 
     await prisma.quest.deleteMany({
       where: { id: { in: questIds } },

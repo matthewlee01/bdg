@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Player {
-  id        String   @id
-  group     Group?   @relation(fields: [groupId], references: [id])
-  groupId   String?
+  id            String      @id
+  group         Group?      @relation(fields: [groupId], references: [id])
+  groupId       String?
 }
 
 model Group {
-  id            String   @id
+  id            String      @id
   demerits      Int
   points        Int
   players       Player[]
@@ -25,7 +25,7 @@ model Group {
 }
 
 model Quest {
-  id            String   @id
+  id            String      @id
   description   String
   participants  Int?
   points        Int
@@ -35,11 +35,13 @@ model Quest {
 }
 
 model QuestAssignment {
-  quest         Quest       @relation(fields: [questId], references: [id])
+  quest         Quest       @relation(fields: [questId], references: [id], onDelete: Cascade)
   questId       String
-  group         Group       @relation(fields: [groupId], references: [id])
+  group         Group       @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId       String 
   duration      Int?
   startTime     DateTime?
+  status        Boolean     @default(false)
+  proofLink     String?  
   @@id([questId, groupId])
 }
