@@ -152,7 +152,7 @@ export const actions = {
     if (startTimeString) {
       startTime = new Date(localDateString + " " + String(startTimeString));
       if (!process.env.LOCAL_DEV) {
-        startTime = new Date(startTime.getTime() + 50400000)
+        startTime = new Date(startTime.getTime() + 25200000)
       }
     }
     const endTimeString = data.get("endTime") || null;
@@ -160,7 +160,7 @@ export const actions = {
     if (endTimeString) {
       endTime = new Date(localDateString + " " + String(endTimeString));
       if (!process.env.LOCAL_DEV) {
-        endTime = new Date(endTime.getTime() + 50400000)
+        endTime = new Date(endTime.getTime() + 25200000)
       }
     }
 
