@@ -99,6 +99,7 @@
         quest end time <span>(optional)</span>
         <input type="time" name="endTime" />
       </label>
+      <input value={new Date().toDateString()} name="localDateString" hidden />
       <button formaction="?/questAssign">assign selected quests to group</button
       >
     </fieldset>

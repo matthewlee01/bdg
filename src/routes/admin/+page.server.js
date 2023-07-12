@@ -146,17 +146,16 @@ export const actions = {
     const questIds = data.getAll("quest");
     const groupId = data.get("groupId");
     const today = new Date();
+    const localDateString = String(data.get("localDateString"));
     const startTimeString = data.get("startTime") || null;
     let startTime;
     if (startTimeString) {
-      startTime = new Date(
-        today.toDateString() + " " + String(startTimeString)
-      );
+      startTime = new Date(localDateString + " " + String(startTimeString));
     }
     const endTimeString = data.get("endTime") || null;
     let endTime;
     if (endTimeString) {
-      endTime = new Date(today.toDateString() + " " + String(endTimeString));
+      endTime = new Date(localDateString + " " + String(endTimeString));
     }
 
     for (const questId of questIds) {
@@ -180,47 +179,50 @@ export const actions = {
 
       new Promise((resolve) => {
         setTimeout(() => resolve(), endTime.getTime() - new Date().getTime());
-      }).then(async () => {
-        await prisma.questAssignment.update({
-          where: {
-            questId_groupId: {
-              questId: questId,
-              groupId: groupId,
-            },
-          },
-          data: {
-            status: true,
-            proofLink: null,
-          },
-        });
-
-        const { demerits } = await prisma.quest.findUnique({
-          where: {
-            id: questId,
-          },
-          select: {
-            demerits: true,
-          },
-        });
-
-        await prisma.group.update({
-          where: {
-            id: groupId,
-          },
-          data: {
-            demerits: {
-              increment: demerits,
-            },
-          },
-        });
-        console.log(
-          "[ admin ] quest: ",
-          questId,
-          "has expired for group:",
-          groupId
-        );
       })
-      .catch((error) => {console.log(error)});
+        .then(async () => {
+          await prisma.questAssignment.update({
+            where: {
+              questId_groupId: {
+                questId: questId,
+                groupId: groupId,
+              },
+            },
+            data: {
+              status: true,
+              proofLink: null,
+            },
+          });
+
+          const { demerits } = await prisma.quest.findUnique({
+            where: {
+              id: questId,
+            },
+            select: {
+              demerits: true,
+            },
+          });
+
+          await prisma.group.update({
+            where: {
+              id: groupId,
+            },
+            data: {
+              demerits: {
+                increment: demerits,
+              },
+            },
+          });
+          console.log(
+            "[ admin ] quest: ",
+            questId,
+            "has expired for group:",
+            groupId
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     console.log("[ admin ] assigned quests:", questIds, "to group:", groupId);
