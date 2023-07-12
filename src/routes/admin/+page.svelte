@@ -42,7 +42,7 @@
       {#each groups as group (group.id)}
         <li>
           <input type="checkbox" id={group.id} name="group" value={group.id} />
-          <label for={group.id}><strong>{group.id}</strong></label><br/>
+          <label for={group.id}><strong>{group.id}</strong></label><br />
           players:<br />
           <ul>
             {#each group.players as player (player.id)}
@@ -87,7 +87,9 @@
             participants: {quest.participants || "n/a"}<br />
             reward: {quest.points} points<br />
             demerits: {quest.demerits}<br />
-            location: <a href={quest.location}>link</a><br />
+            {#if quest.location}
+              location: <a target="_blank" href={quest.location}>link</a><br />
+            {/if}
           </div>
         </li>
       {/each}

@@ -11,16 +11,16 @@
 </script>
 
 <div>
-  <h3>hello, {data.player.id}</h3>
+  <h2>hello, {data.player.id}</h2>
   {#if player.group == null}
     <div>you haven't been assigned to a group yet. stay tuned!</div>
   {:else}
     <div>
-      <h5>group: {group.id}</h5>
-      <h5>points: {group.points}</h5>
-      <h5>demerits: {group.demerits}</h5>
+      <h4>group: {group.id}</h4>
+      <h4>points: {group.points}</h4>
+      <h4>demerits: {group.demerits}</h4>
       <div>
-        <h5>members:</h5>
+        <h4>members:</h4>
         <ul>
           {#each group.players as player (player.id)}
             <li>{player.id}</li>
@@ -28,7 +28,7 @@
         </ul>
       </div>
       <div>
-        <h5>your group's quests!</h5>
+        <h4>your group's quests:</h4>
         <ul>
           {#each assignments as assignment (assignment.questId)}
             <li>
@@ -65,7 +65,7 @@
         </ul>
       </div>
       <div>
-        <h5>completed quests</h5>
+        <h4>completed quests</h4>
         <ul>
           {#each completedAssignments as assignment (assignment.questId)}
 						{#if assignment.proofLink}

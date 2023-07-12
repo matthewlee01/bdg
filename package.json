@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource/eb-garamond": "^5.0.5",
 		"@prisma/client": "^4.16.2"
 	}
 }
