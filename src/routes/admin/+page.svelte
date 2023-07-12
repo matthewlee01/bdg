@@ -42,11 +42,22 @@
       {#each groups as group (group.id)}
         <li>
           <input type="checkbox" id={group.id} name="group" value={group.id} />
-          <label for={group.id}>{group.id}</label>
+          <label for={group.id}><strong>{group.id}</strong></label><br/>
+          players:<br />
           <ul>
             {#each group.players as player (player.id)}
               <li>
                 {player.id}
+              </li>
+            {/each}
+          </ul>
+          assigned quests:<br />
+          <ul>
+            {#each group.assignments as assignment (assignment.questId)}
+              <li>
+                {assignment.questId}<br />
+                start: {assignment.startTime.toTimeString().slice(0, 5)}<br />
+                end: {assignment.endTime.toTimeString().slice(0, 5)}<br />
               </li>
             {/each}
           </ul>

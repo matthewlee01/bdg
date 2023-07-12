@@ -49,6 +49,10 @@
                     >
                     <br />
                   {/if}
+                  {#if assignment.endTime}
+                    deadline: {assignment.endTime.toTimeString().slice(0, 5)}
+                    <br />
+                  {/if}
                   <input name="proofLink" required />
                   <input name="questId" value={assignment.questId} hidden />
                   <input name="groupId" value={group.id} hidden />
